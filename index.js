@@ -63,11 +63,15 @@ var bambooReporter = function (baseReporterDecorator, config, formatError) {
 
 function clean(test) {
     var o = {
-        title       : test.suite.concat(test.description).join(' '),
-        fullTitle   : test.suite[0],
-        duration    : test.time
+        title    : test.description,
+        fullTitle: test.suite.concat(test.description).join(' ')
     };
-    if (!test.success) {
+
+    if (!test.skipped) {
+        o.duration = test.time;
+    }
+
+    if (!test.success || !test.skipped) {
         o.error = '';
         test.log.forEach(function(log) {
           // translate sourcemap
