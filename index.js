@@ -71,7 +71,7 @@ function clean(test) {
         o.duration = test.time;
     }
 
-    if (!test.success || !test.skipped) {
+    if (!test.success && !test.skipped) {
         o.error = '';
         test.log.forEach(function(log) {
           // translate sourcemap
