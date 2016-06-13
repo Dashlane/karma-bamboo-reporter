@@ -15,6 +15,7 @@ var bambooReporter = function (baseReporterDecorator, config, formatError) {
     };
 
     this.onRunStart = function () {
+        this._browsers = []; // Used by Karma
         this.startDate = new Date().toISOString();
         if (fs.existsSync(filename)) {
             fs.unlinkSync(filename);
