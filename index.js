@@ -15,7 +15,7 @@ var bambooReporter = function (baseReporterDecorator, config, formatError) {
     };
 
     this.onRunStart = function () {
-        this._browsers = [];
+        this.startDate = new Date().toISOString();
         if (fs.existsSync(filename)) {
             fs.unlinkSync(filename);
         }
@@ -30,9 +30,21 @@ var bambooReporter = function (baseReporterDecorator, config, formatError) {
         else results.failures.push(result);
     };
 
-    this.onRunComplete = function (browser, result) {
+    this.onRunComplete = function (browser, runResult) {
+
         var obj = {
-            stats: {tests: (result.success + result.failed), passes: result.success, failures: result.failed, duration: results.time }, failures: results.failures.map(clean), passes: results.passes.map(clean), skipped: results.skips.map(clean)
+            stats: {
+                tests: (runResult.success + runResult.failed + results.skips.length),
+                passes: runResult.success,
+                pending: results.skips.length,
+                failures: runResult.failed,
+                start: this.startDate,
+                end: new Date().toISOString(),
+                duration: results.time
+            },
+            failures: results.failures.map(clean),
+            passes: results.passes.map(clean),
+            skipped: results.skips.map(clean)
         };
 
         // If the directoy we're supposed to write into does not exist, create it
