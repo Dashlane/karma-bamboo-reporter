@@ -48,7 +48,7 @@ var bambooReporter = function (baseReporterDecorator, config, formatError) {
             skipped: results.skips.map(clean)
         };
 
-        // If the directoy we're supposed to write into does not exist, create it
+        // If the directory we're supposed to write into does not exist, create it
         var dir = path.dirname(filename);
         if (dir !== '.') {
             mkdirp.sync(dir);
